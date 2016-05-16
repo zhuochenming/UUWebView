@@ -29,7 +29,7 @@
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        [self configureWebView];
+        [self configureWebViewWithFrame:self.frame];
     }
     return self;
 }
@@ -37,14 +37,14 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self configureWebView];
+        [self configureWebViewWithFrame:frame];
     }
     return self;
 }
 
-- (void)configureWebView {
+- (void)configureWebViewWithFrame:(CGRect)frame {
     if (NSClassFromString(@"WKWebView") == nil) {
-        _webView = [[UIWebView alloc] initWithFrame:self.frame];
+        _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
         _webView.delegate = self;
         _webView.suppressesIncrementalRendering = YES;
         _webView.scalesPageToFit = YES;
@@ -53,7 +53,7 @@
     } else {
         WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
         configuration.allowsInlineMediaPlayback = YES;
-        _webViewWK = [[WKWebView alloc] initWithFrame:self.frame configuration:configuration];
+        _webViewWK = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame)) configuration:configuration];
         _webViewWK.navigationDelegate = self;
         [self addSubview:_webViewWK];
     }
