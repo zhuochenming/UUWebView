@@ -6,7 +6,6 @@
 //
 
 #import "UUWebView.h"
-#import <WebKit/WebKit.h>
 
 @interface UUWebView () <UIWebViewDelegate, WKNavigationDelegate>
 
@@ -97,6 +96,14 @@
         return [NSURLRequest requestWithURL:[self.webViewWK URL]];
     }
     return [self.webView request];
+}
+
+- (UIWebView *)uuWebView {
+    return _webView;
+}
+
+- (WKWebView *)uuWKWebView {
+    return _webViewWK;
 }
 
 - (BOOL)canGoBack {
@@ -270,6 +277,9 @@
     if ([self.delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
         [self.delegate webViewDidStartLoad:self];
     }
+    if ([self.delegate respondsToSelector:@selector(webView:didStartProvisionalNavigation:)]) {
+        [self.delegate webViewDidStartLoad:self];
+    }
 }
 
 - (void)handleFinishLoad {
@@ -281,6 +291,10 @@
     if ([self.delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
         [self.delegate webViewDidFinishLoad:self];
     }
+    
+    if ([self.delegate respondsToSelector:@selector(webView:didFinishNavigation:)]) {
+        [self.delegate webViewDidFinishLoad:self];
+    }
 }
 
 - (void)handleError:(NSError *)error {
@@ -290,6 +304,10 @@
     }
     
     if ([self.delegate respondsToSelector:@selector(webView:didFailLoadWithError:)]) {
+        [self.delegate webView:self didFailLoadWithError:error];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(webView:didFailNavigation:withError:)]) {
         [self.delegate webView:self didFailLoadWithError:error];
     }
 }

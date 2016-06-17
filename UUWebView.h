@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 
 //在Safari中打开链接地址
 //typedef NS_ENUM(NSInteger, WebViewNavigationType) {
@@ -53,6 +54,12 @@ typedef void(^JavaScriptCompletionBlock)(NSString *result, NSError *error);
 @property (nonatomic, readonly, getter=isLoading) BOOL loading;
 
 @property (nonatomic, readonly, strong) NSURLRequest *request;
+
+//如果高于iOS8为nil
+@property (nonatomic, readonly, strong) UIWebView *uuWebView;
+
+//如果低于iOS8为nil
+@property (nonatomic, readonly, strong) WKWebView *uuWKWebView;
 
 - (void)loadRequest:(NSURLRequest *)request;
 
